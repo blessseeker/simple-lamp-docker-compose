@@ -1,0 +1,29 @@
+version: "3.8"
+services:
+  mysql:
+    container_name: mysql-lamp
+    image: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+    ports:
+      - 3306:3306
+    networks:
+      - lamp_net
+  php-apache:
+    container_name: php-apache
+    image: php-apache
+    ports:
+      - 80:80
+    links:
+      - mysql
+    depends_on:
+      - mysql
+    volumes:
+      - "./web:/var/www/html"
+    # volumes:
+    #  - ./.env:/var/www/html/.env:ro
+    networks:
+      - lamp_net
+networks:
+  lamp_net:
+    name: lamp_net
